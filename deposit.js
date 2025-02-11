@@ -1,6 +1,6 @@
 function depositProfit(deposit, rate, threshold) {
     
-    let i = 1;
+    let year = 1;
     let newAmount = 0;
     const growRate = rate / 100;
     
@@ -8,9 +8,9 @@ function depositProfit(deposit, rate, threshold) {
     
     while(newAmount < threshold){
         newAmount = newAmount + (newAmount * growRate);
-        i++;
+        year++;
     }
-    return i;
+    return year;
     //  write code here.
 }
 module.exports = depositProfit;

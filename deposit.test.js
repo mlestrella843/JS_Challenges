@@ -1,6 +1,5 @@
 const depositProfit = require('./deposit');  // ✅
 
-
 describe('depositProfit()', () => {
     it('returns number of years it will take to hit threshold based off of deposit & rate', () => {
         // arrange

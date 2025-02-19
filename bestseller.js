@@ -41,28 +41,48 @@ const sales = [
 
 // ventas totales por mes
 
-function salesByMonth(array){
+function analyzeSales(sales) {
+    const salesByMonth = {};  // Para agrupar ventas por mes
+    const productSales = {};  // Para llevar el ranking global de productos vendidos
 
-    const salesMonth = {};
+    // 🔹 Paso 1: Recorrer las ventas y agrupar por mes y por producto
+    sales.forEach(({ product, amount, date }) => {
+        const month = new Date(date).toLocaleString('en-US', { month: 'long' });
 
-    array.forEach(element => {
-        const month = new Date(date).toLocaleDateString('en-US', { month: 'long' });
-        const amount = element.month;
-        const product = element.product;
-
-
-        if(!salesMonth[month]){
-            salesMonth[month] = {
-                totalSales: 0,
-                products: [],
-                productRanking: {
-                    product: [],
-                    totalSold: 0
-                }
-            };
-
+        if (!salesByMonth[month]) {
+            salesByMonth[month] = { totalSales: 0, products: {} };
         }
 
+        salesByMonth[month].totalSales += amount;
+
+        if (!salesByMonth[month].products[product]) {
+            salesByMonth[month].products[product] = 0;
+        }
+        salesByMonth[month].products[product] += amount;
+
+        if (!productSales[product]) {
+            productSales[product] = 0;
+        }
+        productSales[product] += amount;
     });
 
+    // 🔹 Paso 2: Encontrar el producto más vendido en cada mes
+    for (let month in salesByMonth) {
+        let bestSeller = Object.entries(salesByMonth[month].products)
+            .reduce((max, product) => (product[1] > max[1] ? product : max));
+
+        salesByMonth[month].bestSeller = bestSeller[0];
+        delete salesByMonth[month].products;
+    }
+
+    // 🔹 Paso 3: Crear el ranking global de productos más vendidos
+    const productRanking = Object.entries(productSales)
+        .map(([product, totalSold]) => ({ product, totalSold }))
+        .sort((a, b) => b.totalSold - a.totalSold);
+
+    return { salesByMonth, productRanking };
 }
+
+// 🚀 Probamos la función
+const result = analyzeSales(sales);
+console.log(result);

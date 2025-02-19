@@ -61,26 +61,8 @@ function salesByMonth(array){
                 }
             };
 
-
         }
 
-
-
-
-
-
-    })
-
-
-
-
-
-
-
-
-
-
-
-
+    });
 
 }

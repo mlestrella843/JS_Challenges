@@ -15,24 +15,21 @@ const sales = [
 
 function totalSales(array){
     const sold = {};
+    let totalSales = 0
     array.forEach(({ product, amount }) => {
         if(!sold[product]){
             sold[product]= 0;
         }
         sold[product] += amount;     
+        totalSales += amount; // El total de ventas de todos los productos.
     });
 
-    // return sold;
-
-    for( let product in sold){
-        let productMostSale = Object.entries(sold[product])
-        .reduce((max, product) => (product[1] > max[1] ? product[1] : max));
-        console.log(productMostSale);
-
-    }
+    const topProduct = Object.entries(sold).reduce((max, [product, amount]) =>
+        amount > max.amount ? { product, amount } : max
+    , { product: "", amount: 0 });
+    
+    return {totalSales, topProduct, sold}; // Retorna un objeto con el total de ventas y el producto más vendido.
    
-
-
 }
 
 const result = totalSales(sales);
